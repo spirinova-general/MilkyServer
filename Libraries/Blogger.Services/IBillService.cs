@@ -16,5 +16,8 @@ namespace Blogger.Services
         List<Bill> GetAllPending(int customerId);
 
         void InsertBills();
+
+        void InsertBillLog();
+        List<BillsLog> GetLastFiveBillLogs();
     }
 }

@@ -14,6 +14,7 @@ namespace Blogger.Services
         private ICustomerService _customerService;
         private IDeliveryService _deliveryService;
         private ICustomerSettingService _customerSettingService;
+        private IRepository<BillsLog> _billsLogRepository;
 
         private int month;
         private int year;
@@ -21,12 +22,14 @@ namespace Blogger.Services
         #endregion
 
         #region Ctor
-        public BillService(IRepository<Bill> billRepository, ICustomerService customerService, IDeliveryService deliveryService, ICustomerSettingService customerSettingSerive)
+        public BillService(IRepository<Bill> billRepository, ICustomerService customerService, IDeliveryService deliveryService, ICustomerSettingService customerSettingSerive,
+             IRepository<BillsLog> billsLogRepository)
         {
             _billRepository = billRepository;
             _customerService = customerService;
             _deliveryService = deliveryService;
             _customerSettingService = customerSettingSerive;
+            _billsLogRepository = billsLogRepository;
 
             month = DateTime.Now.AddMonths(-1).Month;
             year = DateTime.Now.Year;
@@ -131,8 +134,25 @@ namespace Blogger.Services
         {
             var deliveries = _deliveryService.GetAll(customer.Id);
 
-            return deliveries.Select(x => x.Quantity).Count();
+            return deliveries.Count > 0 ? deliveries.Select(x => x.Quantity).Count() : 0;
         }
+
+        public void InsertBillLog()
+        {
+            var billsLog = new BillsLog();
+            billsLog.GeneratedOn = DateTime.Now;
+
+            _billsLogRepository.Insert(billsLog);
+        }
+
+        public List<BillsLog> GetLastFiveBillLogs()
+        {
+            var bills = (from p in _billsLogRepository.Table
+                         select p).OrderByDescending(x => x.Id).Take(5);
+
+            return bills.ToList();
+        }
+
         #endregion
     }
 }

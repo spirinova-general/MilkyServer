@@ -69,6 +69,7 @@
     <Compile Include="Mapping\Account_Area_Mapping_Mapping.cs" />
     <Compile Include="Mapping\Account_Mapping.cs" />
     <Compile Include="Mapping\Area_Mapping.cs" />
+    <Compile Include="Mapping\BillsLog_Mapping.cs" />
     <Compile Include="Mapping\Bill_Mapping.cs" />
     <Compile Include="Mapping\City_Mapping.cs" />
     <Compile Include="Mapping\CustomerSetting_Mapping.cs" />

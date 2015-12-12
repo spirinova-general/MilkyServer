@@ -83,6 +83,7 @@
     <Compile Include="Domain\Account_Area_Mapping.cs" />
     <Compile Include="Domain\Area.cs" />
     <Compile Include="Domain\Bill.cs" />
+    <Compile Include="Domain\BillsLog.cs" />
     <Compile Include="Domain\City.cs" />
     <Compile Include="Domain\Customer.cs" />
     <Compile Include="Domain\CustomerSetting.cs" />

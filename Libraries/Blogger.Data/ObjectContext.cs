@@ -26,6 +26,7 @@ namespace Blogger.Data
         public DbSet<CustomerSetting> CustomerSetting { get; set; }
         public DbSet<Delivery> Delivery { get; set; }
         public DbSet<GlobalSetting> GlobalSetting { get; set; }
+        public DbSet<BillsLog> BillsLog { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -39,6 +40,7 @@ namespace Blogger.Data
             modelBuilder.Configurations.Add<CustomerSetting>(new CustomerSetting_Mapping());
             modelBuilder.Configurations.Add<Delivery>(new Delivery_Mapping());
             modelBuilder.Configurations.Add<GlobalSetting>(new GlobalSetting_Mapping());
+            modelBuilder.Configurations.Add<BillsLog>(new BillsLog_Mapping());
             base.OnModelCreating(modelBuilder);
         }
 

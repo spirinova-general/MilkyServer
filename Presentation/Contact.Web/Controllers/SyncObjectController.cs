@@ -43,7 +43,7 @@ namespace Contacts.Web.Controllers
         }
         #endregion
 
-     
+
         [HttpPost]
         public HttpResponseMessage SyncData([FromBody] string model)
         {
@@ -83,6 +83,10 @@ namespace Contacts.Web.Controllers
             try
             {
                 _billService.InsertBills();
+
+                //if success insert current datetime
+                _billService.InsertBillLog();
+
                 return Request.CreateResponse(HttpStatusCode.OK, "Bills inserted Successfully");
             }
             catch (Exception ex)
@@ -90,6 +94,21 @@ namespace Contacts.Web.Controllers
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+
+        [HttpGet]
+        public List<BillsLog> GetLastFiveBillLogs()
+        {
+            try
+            {
+                return _billService.GetLastFiveBillLogs();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
 
         [HttpGet]
         public string GetPendingBills(int accountId)//(Person obj )
