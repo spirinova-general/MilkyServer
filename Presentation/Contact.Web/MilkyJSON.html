@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            $("#myButton").click(function () {
+
+
+                $.ajax({
+                    type: "GET",
+                    url: "api/SyncObject/TestGetAll",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json", // dataType is json format
+                    success: OnSuccess,
+                    error: OnErrorCall
+                });
+
+                function OnSuccess(response) {
+                    debugger;
+
+                $.ajax({
+                    type: "POST",
+                    url: "api/SyncObject/SyncData",
+                    data: JSON.stringify(response),
+                    contentType: "application/json",
+                    dataType: "json", // dataType is json format
+                    error: OnErrorCall
+                });
+
+            }
+                function OnErrorCall(response) { console.log(response); }
+            });
+
+            //$("#myButton").click(function () {
+            //    var name = $("#Name").val();
+            //    var address = $("#Address").val();
+            //    var dob = $("#DOB").val();
+            //    $.ajax({
+            //        url: "http://localhost:50488/api/SyncObject/Post",
+            //        type: "Post",
+            //        data: JSON.stringify([name, address, dob]), //{ Name: name,
+            //        // Address: address, DOB: dob },
+            //        contentType: 'application/json; charset=utf-8',
+            //        success: function (data) { },
+            //        error: function () { alert('error'); }
+            //    });
+            //});
+        });
+
+
+
+
+
+
+
+    </script>
+</head>
+<body>
+    <input type="button" id="myButton" value="Test Json" />
+</body>
+</html>

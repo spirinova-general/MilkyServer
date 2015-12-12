@@ -1,0 +1,17 @@
+C:\Users\Rohi\Desktop\Milk\Code\Service\MilkyAPI\Libraries\Blogger.Core\bin\Blogger.Core.dll.config
+C:\Users\Rohi\Desktop\Milk\Code\Service\MilkyAPI\Libraries\Blogger.Core\bin\Blogger.Core.dll
+C:\Users\Rohi\Desktop\Milk\Code\Service\MilkyAPI\Libraries\Blogger.Core\bin\Blogger.Core.pdb
+C:\Users\Rohi\Desktop\Milk\Code\Service\MilkyAPI\Libraries\Blogger.Core\bin\Autofac.dll
+C:\Users\Rohi\Desktop\Milk\Code\Service\MilkyAPI\Libraries\Blogger.Core\bin\Autofac.Integration.Mvc.dll
+C:\Users\Rohi\Desktop\Milk\Code\Service\MilkyAPI\Libraries\Blogger.Core\bin\EntityFramework.dll
+C:\Users\Rohi\Desktop\Milk\Code\Service\MilkyAPI\Libraries\Blogger.Core\bin\EntityFramework.SqlServer.dll
+C:\Users\Rohi\Desktop\Milk\Code\Service\MilkyAPI\Libraries\Blogger.Core\bin\System.Web.Mvc.dll
+C:\Users\Rohi\Desktop\Milk\Code\Service\MilkyAPI\Libraries\Blogger.Core\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\Rohi\Desktop\Milk\Code\Service\MilkyAPI\Libraries\Blogger.Core\bin\Autofac.xml
+C:\Users\Rohi\Desktop\Milk\Code\Service\MilkyAPI\Libraries\Blogger.Core\bin\Autofac.Integration.Mvc.xml
+C:\Users\Rohi\Desktop\Milk\Code\Service\MilkyAPI\Libraries\Blogger.Core\bin\EntityFramework.xml
+C:\Users\Rohi\Desktop\Milk\Code\Service\MilkyAPI\Libraries\Blogger.Core\bin\EntityFramework.SqlServer.xml
+C:\Users\Rohi\Desktop\Milk\Code\Service\MilkyAPI\Libraries\Blogger.Core\bin\System.Web.Mvc.xml
+C:\Users\Rohi\Desktop\Milk\Code\Service\MilkyAPI\Libraries\Blogger.Core\obj\Debug\Milky.Core.csprojResolveAssemblyReference.cache
+C:\Users\Rohi\Desktop\Milk\Code\Service\MilkyAPI\Libraries\Blogger.Core\obj\Debug\Blogger.Core.dll
+C:\Users\Rohi\Desktop\Milk\Code\Service\MilkyAPI\Libraries\Blogger.Core\obj\Debug\Blogger.Core.pdb
