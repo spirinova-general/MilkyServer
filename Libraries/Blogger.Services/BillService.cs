@@ -153,6 +153,14 @@ namespace Blogger.Services
             return bills.ToList();
         }
 
-        #endregion
+        public bool IsBillPresentForMonth()
+        {
+            var isPresent = (from p in _billsLogRepository.Table
+                             where p.GeneratedOn.Month == DateTime.Now.Month
+                             select p).FirstOrDefault();
+
+            return isPresent != null ? true : false;
+            #endregion
+        }
     }
 }

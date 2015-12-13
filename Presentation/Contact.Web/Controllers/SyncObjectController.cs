@@ -27,11 +27,12 @@ namespace Contacts.Web.Controllers
         private IDeliveryService _deliveryServie;
         private IGlobalSettingService _globalSettingService;
         private IAccountAreaMappingService _accountAreaMappingsService;
+        private IAreaService _areaService;
         #endregion
 
         #region Ctor
         public SyncObjectController(IBillService billService, IAccountService accountService, ICustomerService customerService, ICustomerSettingService customerSettingService
-                                     , IDeliveryService deliveryServie, IGlobalSettingService globalSettingService, IAccountAreaMappingService accountAreaMappingsService)
+                                     , IDeliveryService deliveryServie, IGlobalSettingService globalSettingService, IAccountAreaMappingService accountAreaMappingsService, IAreaService areaService)
         {
             _billService = billService;
             _accountService = accountService;
@@ -40,6 +41,7 @@ namespace Contacts.Web.Controllers
             _deliveryServie = deliveryServie;
             _globalSettingService = globalSettingService;
             _accountAreaMappingsService = accountAreaMappingsService;
+            _areaService = areaService;
         }
         #endregion
 
@@ -82,6 +84,11 @@ namespace Contacts.Web.Controllers
         {
             try
             {
+                var isBillPresentForMonth = _billService.IsBillPresentForMonth();
+
+                if (isBillPresentForMonth)
+                    throw new Exception("Bill already generated for this month ");
+
                 _billService.InsertBills();
 
                 //if success insert current datetime
@@ -150,6 +157,24 @@ namespace Contacts.Web.Controllers
 
             return Request.CreateResponse(HttpStatusCode.Created, "User Added Successfully");
         }
+
+        [HttpGet]
+        public List<Area> GetAllAreas()
+        {
+            try
+            {
+                var area = _areaService.GetAll();
+                return area;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+
+
+        }
+
 
         #region private methods
 
