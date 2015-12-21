@@ -159,12 +159,16 @@ namespace Contacts.Web.Controllers
         }
 
         [HttpGet]
-        public List<Area> GetAllAreas()
+        public string GetAllAreas()
         {
             try
             {
                 var area = _areaService.GetAll();
-                return area;
+
+                var JsonData = Newtonsoft.Json.JsonConvert.SerializeObject(area);
+
+                return JsonData;
+
             }
             catch (Exception ex)
             {
