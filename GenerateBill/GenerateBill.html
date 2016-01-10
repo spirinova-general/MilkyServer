@@ -17,51 +17,70 @@
     <link rel="stylesheet" href="css/animate.min.css" type="text/css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/creative.css" type="text/css">
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/jqgrid/4.6.0/css/ui.jqgrid.css" type="text/css">
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/base/jquery-ui.css" type="text/css" media="all" />
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+
     <script>
 
         $(document).ready(function () {
-
-            GetBills();
+            $("#generateBill_1").hide();
 
             $("#generateBill").click(function () {
 
-                $.ajax({
-                    type: "GET",
-                    url: "http://localhost:50488/api/SyncObject/InsertBills",
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json", // dataType is json format
-                    success: OnSuccess,
-                    error: OnErrorCall
+                $("#headertext").html("List of finalized bills for month " + GetCurrentMonth() + "");
+                $("#generateBill_1").show();
+
+                jQuery("#grid").jqGrid({
+                    url: "http://localhost:50488/api/SyncObject/GetBills?isFinal= true",
+                    datatype: "json",
+                    mtype: 'GET',
+                    colNames: ['Account Id', 'Farmer Name', 'Customer Id', 'Customer Name', 'Total Amount'],
+                    colModel: [{
+                        name: 'AccountId',
+                        index: 'AccountId',
+                        width: 100,
+                        sorttype: "int"
+                    },
+                    {
+                        name: 'FarmerName',
+                        index: 'FarmerName',
+                        width: 200,
+                    },
+                    {
+                        name: 'CustomerId',
+                        index: 'CustomerId',
+                        width: 100
+                    },
+                    {
+                        name: 'CustomerName',
+                        index: 'CustomerName',
+                        width: 200,
+                    },
+
+
+                     {
+                         name: 'TotalAmount',
+                         index: 'TotalAmount',
+                         width: 100,
+                     },
+
+                    ],
+                    viewrecords: true,
+                    ignoreCase: true,
+                    height: 'auto',
+                    width: 'auto'
                 });
 
-                function OnSuccess(response) {
-                    alert("Bill generated sucessfully for month " + GetCurrentMonth() + " "),
-                     GetBills();
-                }
-                function OnErrorCall(response) { alert("Error while generating bill " + response.responseText); }
             });
 
-            function GetCurrentMonth() {
-
-                var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-                var date = new Date();
-
-                return months[date.getMonth()] + ' ' + date.getFullYear();
-            };
-
-
-            function GetBills() {
+            $("#sendBill").click(function () {
 
                 $.ajax({
-                    type: "GET",
-                    url: "http://localhost:50488/api/SyncObject/GetLastFiveBillLogs",
+                    type: "POST",
+                    url: "http://localhost:50488/api/SyncObject/SendSms",
                     contentType: "application/json; charset=utf-8",
                     dataType: "json", // dataType is json format
                     success: OnSuccess,
@@ -69,30 +88,61 @@
                 });
 
                 function OnSuccess(response) {
-                    debugger;
+                    alert(response);
+                };
 
-                    var row = $('<div class="row"  style="color:red">');
-
-                    $.each(response, function (index, value) {
-                        debugger;
-                        //By Spliting the input control value with space
-                        var date = value.GeneratedOn.split('T')[0];
-
-                        var parsedDate = date.split("-")[2] + ' ,' + (date.split("-")[1]) + ',' + date.split("-")[0];
-                        //date -2010-10-18
-                        row.append(' <div class="col-xs-12">' + (index + 1) + '. ' + parsedDate + '</div>');
-                    });
-
-                    row.append('</div>')
-                    $(".generateBill").html(row);
-
-                }
-                function OnErrorCall(response) { alert("Error while fetching bills" + response.responseText); }
-
-            };
-
-
+                function OnErrorCall(response) {
+                    alert("Error while sending bills" + response + "");
+                };
+            });
         });
+
+
+        function GetCurrentMonth() {
+
+            var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            var date = new Date();
+
+            return months[date.getMonth()] + ' ' + date.getFullYear();
+        };
+
+
+        //function GetBills() {
+
+        //    $.ajax({
+        //        type: "GET",
+        //        url: "http://localhost:50488/api/SyncObject/GetLastFiveBillLogs",
+        //        contentType: "application/json; charset=utf-8",
+        //        dataType: "json", // dataType is json format
+        //        success: OnSuccess,
+        //        error: OnErrorCall
+        //    });
+
+        //    function OnSuccess(response) {
+        //        debugger;
+
+        //        var row = $('<div class="row"  style="color:red">');
+
+        //        $.each(response, function (index, value) {
+        //            debugger;
+        //            //By Spliting the input control value with space
+        //            var date = value.GeneratedOn.split('T')[0];
+
+        //            var parsedDate = date.split("-")[2] + ' ,' + (date.split("-")[1]) + ',' + date.split("-")[0];
+        //            //date -2010-10-18
+        //            row.append(' <div class="col-xs-12">' + (index + 1) + '. ' + parsedDate + '</div>');
+        //        });
+
+        //        row.append('</div>')
+        //        $(".generateBill").html(row);
+
+        //    }
+        //    function OnErrorCall(response) { alert("Error while fetching bills" + response.responseText); }
+
+        //};
+
+
+        //    });
 
 
 
@@ -103,19 +153,25 @@
     <header>
         <div class="header-content">
             <div class="header-content-inner">
-                <h2 style=" font-size: 30px;">Click on Button to Generate Bill</h2>
+                <h2 style=" font-size: 24px;">Get bill show the list of bill. Send bill  send sms to customers with their billing details.</h2>
                 <br />
-                <button id="generateBill" class="btn btn-primary btn-xl page-scroll">Generate Bill</button>
+                <button id="generateBill" class="btn btn-primary btn-xl page-scroll">Get Bill</button>
+                <button id="sendBill" class="btn btn-primary btn-xl page-scroll">Send Bill</button>
                 <!--<input type="button" id="myButton" value="Test Json" />-->
                 <br />
                 <br />
-                <h4 style=" font-size: 30px;">Last Five bill generation information</h4>
+                <div>
+                    <h4 id="headertext" style=" font-size: 30px;"></h4>
+                    <a href="GenerateUnfinalizedBill.Html" id="generateBill_1" class="btn btn-primary btn-primary page-scroll" style=" background-color:green">Get unfinalized Bill</a>
+                </div>
+                <br />
             </div>
             <div class="middle-content">
                 <div class="generateBill">
-                    <div class="row">
+                    <table id="grid"></table>
+                    <!--<div class="row">
                         <div class="col-xs-6"></div>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </div>
@@ -125,7 +181,8 @@
 
 
     <!-- jQuery -->
-    <script src="js/jquery.js"></script>
+    <!--<script src="js/jquery.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/jqgrid/4.6.0/jquery.jqGrid.min.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
     <!-- Plugin JavaScript -->
@@ -136,3 +193,4 @@
     <script src="js/creative.js"></script>
 </body>
 </html>
+<!--  -->

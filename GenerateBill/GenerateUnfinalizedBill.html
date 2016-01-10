@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Creative - Start Bootstrap Theme</title>
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <!-- Custom Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css" type="text/css">
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="css/animate.min.css" type="text/css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/creative.css" type="text/css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/jqgrid/4.6.0/css/ui.jqgrid.css" type="text/css">
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/base/jquery-ui.css" type="text/css" media="all" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+
+    <script>
+
+        $(document).ready(function () {
+
+
+            $("#headertext").html("List of unfinalized bills for month " + GetCurrentMonth() + "");
+            $("#generateBill_1").show();
+
+            jQuery("#grid").jqGrid({
+                url: "http://localhost:50488/api/SyncObject/GetBills?isFinal= false",
+                datatype: "json",
+                mtype: 'GET',
+                colNames: ['Account Id', 'Farmer Name', 'Customer Id', 'Customer Name', 'Total Amount'],
+                colModel: [{
+                    name: 'AccountId',
+                    index: 'AccountId',
+                    width: 100,
+                    sorttype: "int"
+                },
+                {
+                    name: 'FarmerName',
+                    index: 'FarmerName',
+                    width: 200,
+                },
+                {
+                    name: 'CustomerId',
+                    index: 'CustomerId',
+                    width: 100
+                },
+                {
+                    name: 'CustomerName',
+                    index: 'CustomerName',
+                    width: 200,
+                },
+
+                 {
+                     name: 'TotalAmount',
+                     index: 'TotalAmount',
+                     width: 100,
+                 },
+
+                ],
+
+                viewrecords: true,
+                ignoreCase: true,
+                height: 'auto',
+                width: 'auto'
+            });
+
+        });
+
+
+        function GetCurrentMonth() {
+
+            var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            var date = new Date();
+
+            return months[date.getMonth()] + ' ' + date.getFullYear();
+        };
+
+    </script>
+</head>
+<body id="page-top">
+
+    <header>
+        <div class="header-content">
+            <a href="GenerateBill.html" class="btn btn-primary page-scroll" style="font-size: 10px; margin-left: -642px; background-color:burlywood">Back</a>
+
+            <div class="header-content-inner">
+                <!--<h2 style=" font-size: 24px;">Get bill show the list of bill. Send bill  send sms to customers with their bill details.</h2>-->
+
+                <br />
+                <br />
+                <div>
+                    <h4 id="headertext" style=" font-size: 30px;"></h4>
+                </div>
+
+
+                <br />
+            </div>
+            <div class="middle-content">
+                <table id="grid"></table>
+                <!--<div class="row">
+                    <div class="col-xs-6"></div>
+                </div>-->
+            </div>
+        </div>
+
+        <div id="test"></div>
+    </header>
+
+
+    <!-- jQuery -->
+    <!--<script src="js/jquery.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/jqgrid/4.6.0/jquery.jqGrid.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- Plugin JavaScript -->
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/jquery.fittext.js"></script>
+    <script src="js/wow.min.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="js/creative.js"></script>
+</body>
+</html>
+<!--  -->

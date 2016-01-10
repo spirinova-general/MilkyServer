@@ -12,6 +12,7 @@ namespace Blogger.Data
         void Update(T entity);
         void Delete(T entity);
         IQueryable<T> Table { get; }
+
     }
 
 }

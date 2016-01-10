@@ -160,7 +160,22 @@ namespace Blogger.Services
                              select p).FirstOrDefault();
 
             return isPresent != null ? true : false;
-            #endregion
+
         }
+
+        public List<Bill> GetBillsByAccountId(int accountId)
+        {
+            if (accountId == 0)
+                throw new ArgumentNullException("account id null");
+
+            var bills = (from p in _billRepository.Table.AsEnumerable()
+                         where p.AccountId == accountId && p.StartDate >= new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1) && p.EndDate <= new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year,DateTime.Now.Month))
+                         select p).ToList();
+
+            return bills;
+        }
+
+
+        #endregion
     }
 }

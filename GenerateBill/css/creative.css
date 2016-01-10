@@ -437,11 +437,12 @@ header {
     }
 
 .btn {
-    border: 0;
-    border-radius: 300px;
+       border: 0;
+    border-radius: 18px;
     text-transform: uppercase;
     font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;
     font-weight: 700;
+    margin-left: 13px;
 }
 
 .btn-xl {
@@ -476,7 +477,6 @@ body {
 
 .middle-content {
     margin-top: 5px;
-    height: 300px;
     width: 711px;
     margin-left: 288px;
 }

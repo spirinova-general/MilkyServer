@@ -164,6 +164,7 @@
     </Compile>
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\BillsModel.cs" />
     <Compile Include="Models\ContactModel.cs" />
     <Compile Include="Models\SyncObjectModel.cs" />
     <Compile Include="Models\UserModel.cs" />
@@ -175,6 +176,7 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="MilkyJSON - Copy.html" />
     <Content Include="MilkyJSON.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

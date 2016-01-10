@@ -11,6 +11,7 @@ namespace Blogger.Core.Domain
         public DateTime DateModified { get; set; }
         public int Dirty { get; set; }
         public int AccountId { get; set; }
+        public int ClientId { get; set; }
         public virtual Account Account { get; set; }
     }
 }

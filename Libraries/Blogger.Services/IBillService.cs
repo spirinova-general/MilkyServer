@@ -20,5 +20,7 @@ namespace Blogger.Services
         void InsertBillLog();
         List<BillsLog> GetLastFiveBillLogs();
         bool IsBillPresentForMonth();
+
+        List<Bill> GetBillsByAccountId(int accountId);
     }
 }

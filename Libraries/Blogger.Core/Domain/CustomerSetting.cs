@@ -13,6 +13,7 @@ namespace Blogger.Core.Domain
         public double DefaultQuantity { get; set; }
         public DateTime DateModified { get; set; }
         public int Dirty { get; set; }
+        public int ClientId { get; set; }
         public virtual Account Account { get; set; }
         public virtual Customer Customer { get; set; }
     }

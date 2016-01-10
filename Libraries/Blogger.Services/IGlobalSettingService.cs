@@ -9,6 +9,7 @@ namespace Blogger.Services
     public interface IGlobalSettingService
     {
         GlobalSetting GetById(int id);
+        GlobalSetting GetByClientIdAccountId(int clientId, int accountId);
         void Insert(GlobalSetting globalSetting);
         void Update(GlobalSetting globalSetting);
         void Delete(GlobalSetting globalSetting);
