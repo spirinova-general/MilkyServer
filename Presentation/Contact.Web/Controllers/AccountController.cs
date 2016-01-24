@@ -18,6 +18,7 @@ namespace Contacts.Web.Controllers
 {
     public class AccountController :ApiController
     {
+   
         #region Field
        
         private readonly IAccountService _accountService;
@@ -32,7 +33,7 @@ namespace Contacts.Web.Controllers
         }
         #endregion
       
-      [ResponseType(typeof(AccountModel))]
+      //[ResponseType(typeof(AccountModel))]
         public HttpResponseMessage Create(AccountModel model)
         {
             try
