@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using Blogger.Core.Domain;
+using Blogger.Data;
+using Blogger.Services;
 using Contacts.Web.Extensions;
 using Contacts.Web.Models;
 using System;
@@ -10,8 +13,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Omu.ValueInjecter;
-using Blogger.Services;
-using Blogger.Core.Domain;
+
 
 namespace Contacts.Web.Controllers
 {
@@ -100,6 +102,61 @@ namespace Contacts.Web.Controllers
             }
         }
 
+        [HttpGet]
+        public List<BillsModel> GetBills(bool isFinal)
+        {
+            var billList = new List<BillsModel>();
+            try
+            {
+                foreach (var account in _accountService.GetAll())
+                {
+                    var bills = _billService.GetBillsByAccountId(account.Id);
+
+                    //for sometime skip this. wl get back to this once we implement our own logic to insert bill if bill is not present
+                    if (bills.Count == 0)
+                        continue;
+
+                    foreach (var customer in _customerService.GetAll(account.Id))
+                    {
+                        var model = new BillsModel();
+
+                        var bill = bills.Where(x => x.CustomerId == customer.Id).FirstOrDefault();
+
+                        model.AccountId = account.Id;
+                        model.CustomerId = customer.Id;
+                        model.CustomerName = string.Format("{0} {1}", customer.FirstName.Trim(), customer.LastName.Trim());
+                        model.FarmerName = string.Format("{0} {1}", account.FirstName.Trim(), account.LastName.Trim());
+
+                        if (bill != null)
+                        {
+                            model.IsFinal = bill.IsFinal;
+                            model.TotalAmount = bill.TotalAmount;
+                        }
+                        else
+                        {
+                            model.IsFinal = false;
+                            model.TotalAmount = 0.0;
+                        }
+
+                        billList.Add(model);
+                    }
+                }
+
+                return billList.Where(x => x.IsFinal == isFinal).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        public HttpResponseMessage SendSms()
+        {
+            return Request.CreateResponse(HttpStatusCode.Created, "Sms sent Successfully");
+        }
+
+
 
         [HttpGet]
         public List<BillsLog> GetLastFiveBillLogs()
@@ -157,12 +214,16 @@ namespace Contacts.Web.Controllers
         }
 
         [HttpGet]
-        public List<Area> GetAllAreas()
+        public string GetAllAreas()
         {
             try
             {
                 var area = _areaService.GetAll();
-                return area;
+
+                var JsonData = Newtonsoft.Json.JsonConvert.SerializeObject(area);
+
+                return JsonData;
+
             }
             catch (Exception ex)
             {
@@ -200,7 +261,7 @@ namespace Contacts.Web.Controllers
         {
             foreach (var accountAreaMapping in accountAreaMappings)
             {
-                var newAccountAreaMapping = _accountAreaMappingsService.GetById(accountAreaMapping.Id);
+                var newAccountAreaMapping = _accountAreaMappingsService.GetByClientIdAccountId(accountAreaMapping.ClientId, accountAreaMapping.AccountId);
                 accountAreaMapping.Dirty = 0;
 
                 if (newAccountAreaMapping != null)
@@ -220,7 +281,7 @@ namespace Contacts.Web.Controllers
         {
             foreach (var globalSetting in globalSettings)
             {
-                var newglobalSetting = _globalSettingService.GetById(globalSetting.Id);
+                var newglobalSetting = _globalSettingService.GetByClientIdAccountId(globalSetting.ClientId, globalSetting.AccountId);
                 globalSetting.Dirty = 0;
 
                 if (newglobalSetting != null)
@@ -240,7 +301,7 @@ namespace Contacts.Web.Controllers
         {
             foreach (var delivery in deliveries)
             {
-                var newdelivery = _deliveryServie.GetById(delivery.Id);
+                var newdelivery = _deliveryServie.GetByClientIdAccountId(delivery.ClientId, delivery.AccountId);
                 delivery.Dirty = 0;
 
                 if (newdelivery != null)
@@ -260,7 +321,7 @@ namespace Contacts.Web.Controllers
         {
             foreach (var customerSetting in customerSettings)
             {
-                var newCustomerSetting = _customerSettingService.GetById(customerSetting.Id);
+                var newCustomerSetting = _customerSettingService.GetByClientIdAccountId(customerSetting.ClientId, customerSetting.AccountId);
                 customerSetting.Dirty = 0;
 
                 if (newCustomerSetting != null)
@@ -305,7 +366,7 @@ namespace Contacts.Web.Controllers
         {
             foreach (var customer in customers)
             {
-                var newCustomer = _customerService.GetById(customer.Id);
+                var newCustomer = _customerService.GetByClientIdAccountId(customer.ClientId, customer.AccountId);
                 customer.Dirty = 0;
 
                 if (newCustomer != null)
@@ -334,15 +395,29 @@ namespace Contacts.Web.Controllers
 
             var model = new SyncObjectModel();
 
-            var customerList = _customerService.GetAll(1);
+            List<Customer> customerList = new List<Customer>();
+
+            customerList.Add(new Customer()
+            {
+                AccountId = 1,
+                FirstName = "Rohidas",
+                LastName = "Kadam",
+                Mobile = "9175429576",
+                Address1 = "address1",
+                Address2 = "Address2",
+                Balance = 0,
+                DateAdded = DateTime.Now,
+                DateModified = DateTime.Now,
+                DeliveryStartDate = DateTime.Now,
+                AreaId = 1,
+                ClientId = 1,
+                Id = 1
+            });
+
             var customerSettingList = _customerSettingService.GetAll(1);
 
             model.Customer_List.AddRange(customerList);
             model.CustomerSetting_List.AddRange(customerSettingList);
-            model.Delivery_List.AddRange(_deliveryServie.GetAll());
-            model.Account_Area_Mapping_List.AddRange(_accountAreaMappingsService.GetAll());
-            model.Account_List.AddRange(_accountService.GetAll());
-            model.GlobalSetting_List.AddRange(_globalSettingService.GetAll());
 
             var JsonData = Newtonsoft.Json.JsonConvert.SerializeObject(model);
 

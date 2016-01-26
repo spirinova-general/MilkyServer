@@ -14,3 +14,6 @@ insert into customerrole values('Administrators',0,0,1,1,'Administrators'),
    
    
     alter table Bill add IsFinal bit not null default 1
+    
+    
+    alter table Account_Area_Mapping add DateModified datetime not null default getdate()

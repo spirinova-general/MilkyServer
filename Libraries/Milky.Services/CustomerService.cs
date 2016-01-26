@@ -28,6 +28,13 @@ namespace Blogger.Services
                          select c).FirstOrDefault();
             return query;
         }
+        public Customer GetByClientIdAccountId(int clientId, int accountId)
+        {
+            var query = (from c in _customerRepository.Table
+                         where c.AccountId == accountId && c.ClientId == clientId
+                         select c).FirstOrDefault();
+            return query;
+        }
         public void Insert(Customer customer)
         {
             if (customer == null)

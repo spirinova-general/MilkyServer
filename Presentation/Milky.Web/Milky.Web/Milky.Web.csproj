@@ -208,6 +208,7 @@
     </Compile>
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\BillsModel.cs" />
     <Compile Include="Models\ContactModel.cs" />
     <Compile Include="Models\SyncObjectModel.cs" />
     <Compile Include="Models\UserModel.cs" />

@@ -18,6 +18,8 @@ namespace Blogger.Core.Domain
         public int AccountId { get; set; }
         public int AreaId { get; set; }
         public int Dirty { get; set; }
+        public int ClientId { get; set; }
+        public DateTime DeliveryStartDate { get; set; }
         public virtual Account Account { get; set; }
         public virtual Area Area { get; set; }
     }

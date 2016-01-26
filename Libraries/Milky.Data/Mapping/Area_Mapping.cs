@@ -16,7 +16,6 @@ namespace Blogger.Data.Mapping
             this.HasRequired(o => o.City)
                .WithMany()
                .HasForeignKey(o => o.CityId);
-            this.Property(pr => pr.Dirty).IsRequired();
             this.Property(pr => pr.Name).IsRequired();
         }
     }
