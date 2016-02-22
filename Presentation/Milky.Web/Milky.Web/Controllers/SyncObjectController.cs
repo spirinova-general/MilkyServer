@@ -156,8 +156,6 @@ namespace Contacts.Web.Controllers
             return Request.CreateResponse(HttpStatusCode.Created, "Sms sent Successfully");
         }
 
-
-
         [HttpGet]
         public List<BillsLog> GetLastFiveBillLogs()
         {
@@ -202,16 +200,84 @@ namespace Contacts.Web.Controllers
             return _accountService.IsValidUser(farmerCode);
         }
 
-        [HttpPost]
-        public HttpResponseMessage AddUser(Account account)
+        [HttpPost] 
+        public HttpResponseMessage AddAccount(Account account)
         {
-            if (account == null)
-                throw new ArgumentNullException("accout");
+            try
+            {
+                if (account == null)
+                    throw new ArgumentNullException("account");
 
-            _accountService.Insert(account);
+                _accountService.Insert(account);
 
-            return Request.CreateResponse(HttpStatusCode.Created, "User Added Successfully");
+                return Request.CreateResponse(HttpStatusCode.Created, "Account crated Successfully");
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
+
+            }
+
         }
+
+        /// <summary>
+        /// return account 
+        /// </summary>
+        /// <param name="accountId"></param>
+        [HttpGet]
+        public Account GetAccount(int accountId)
+        {
+            if (accountId == 0)
+                throw new ArgumentNullException("accountid is null");
+
+            try
+            {
+                var account = _accountService.GetById(accountId);
+
+                return account;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+        /// <summary>
+        /// returns all accounts
+        /// </summary>
+        [HttpGet]
+        public List<AccountModel> GetAllAccounts()
+        {
+            try
+            {
+                var accounts = _accountService.GetAll();
+
+                var accountModelList = new List<AccountModel>();
+
+                accountModelList.AddRange(accounts.Select(x => new AccountModel()
+                {
+                    Id = x.Id,
+                    FarmerCode = x.FarmerCode,
+                    CreatedOn = x.DateAdded,
+                    StartDate = x.StartDate.ToString("dd MMMM yyyy"),
+                    EndDate = x.EndDate.ToString("dd MMMM yyyy"),
+                    FarmerName = string.Format("{0} {1}", x.FirstName.Trim(), x.LastName.Trim()),
+                    MobileNumber = x.Mobile,
+                    Validated = x.Validated ? "Yes" : "No",
+                    SmsLeft = x.TotalSms - x.UsedSms
+
+                }));
+
+                return accountModelList;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
 
         [HttpGet]
         public string GetAllAreas()

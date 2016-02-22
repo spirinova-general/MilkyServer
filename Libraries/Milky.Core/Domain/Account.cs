@@ -15,6 +15,10 @@ namespace Blogger.Core.Domain
         public int Dirty { get; set; }
         public DateTime DateAdded { get; set; }
         public DateTime DateModified { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public int UsedSms { get; set; }
+        public int TotalSms { get; set; }
     }
 }
 
