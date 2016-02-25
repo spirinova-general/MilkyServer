@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            $("#myButton").click(function () {
+
+
+
+	var sendInfo = {
+			"FarmerCode":"007","FirstName":"Rohidas","LastName":"Kadam","Mobile":"9175429576",
+"Validated":true,"Dirty":0,"DateAdded":"2016-02-21T02:44:38.067",
+"DateModified":"2016-02-21T02:44:38.067","StartDate":"2016-02-21T02:44:38.067","EndDate":"2016-02-21T02:44:38.067","UsedSms":0,"TotalSms":1000,"Id":1
+			
+          
+       			};
+
+       $.ajax({
+           type: "POST",
+           //url: "http://localhost:17232/api/SyncObject/addaccount",
+           
+           url: "http://milky.yaylo.com/api/SyncObject/addaccount",
+           dataType: "json",
+           success: function (msg) {
+               debugger
+               if (msg) {
+                   alert("Somebody was added in list !" + msg);
+                   alert(msg.Id);
+                   location.reload(true);
+               } else {
+                   alert("Cannot add to list !");
+               }
+           },
+
+           data: sendInfo,
+ 	  error: function(XMLHttpRequest, textStatus, errorThrown) {
+     		alert("some error" + textStatus + errorThrown) ;
+		}	
+       });
+
+          
+
+      });
+ });    
+
+
+
+
+
+
+    </script>
+</head>
+<body>
+    <input type="button" id="myButton" value="Test Json" />
+</body>
+</html>

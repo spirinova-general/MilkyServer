@@ -210,7 +210,7 @@ namespace Contacts.Web.Controllers
 
                 _accountService.Insert(account);
 
-                return Request.CreateResponse(HttpStatusCode.Created, "Account crated Successfully");
+                return Request.CreateResponse(HttpStatusCode.Created, account);
             }
             catch (Exception ex)
             {
