@@ -205,11 +205,19 @@ namespace Contacts.Web.Controllers
         {
             try
             {
-                if (account == null)
-                    throw new ArgumentNullException("account");
+                if (account == null || string.IsNullOrEmpty(account.Mobile))
+                    throw new ArgumentNullException("account or mobile is null");
 
-                _accountService.Insert(account);
 
+                var existingAccount = _accountService.GetByMobileNumber(account.Mobile);
+                if( existingAccount == null)
+                {
+                    _accountService.Insert(account);
+                }
+                else
+                {
+                    account = existingAccount;
+                }
                 return Request.CreateResponse(HttpStatusCode.Created, account);
             }
             catch (Exception ex)

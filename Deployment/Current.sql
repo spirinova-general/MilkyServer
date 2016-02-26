@@ -17,3 +17,5 @@ insert into customerrole values('Administrators',0,0,1,1,'Administrators'),
     
     
     alter table Account_Area_Mapping add DateModified datetime not null default getdate()
+
+alter table Account add constraint Mobile_Unique unique(Mobile);

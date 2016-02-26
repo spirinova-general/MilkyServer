@@ -14,6 +14,8 @@ namespace Blogger.Services
         void Update(Account account);
         void Delete(Account account);
         List<Account> GetAll();
+
+        Account GetByMobileNumber(string number);
         bool IsValidUser(string farmerCode);
     }
 }

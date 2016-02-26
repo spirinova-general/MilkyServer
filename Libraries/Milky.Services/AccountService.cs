@@ -37,6 +37,14 @@ namespace Blogger.Services
                          select c).FirstOrDefault();
             return query;
         }
+
+        public Account GetByMobileNumber(string number)
+        {
+            var query = (from c in _accountRepository.Table
+                         where c.Mobile == number
+                         select c).FirstOrDefault();
+            return query;
+        }
         public void Insert(Account account)
         {
             if (account == null)
