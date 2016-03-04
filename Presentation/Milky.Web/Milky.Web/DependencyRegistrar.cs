@@ -43,6 +43,7 @@ namespace Contacts.Web
 
             //Register Services
             builder.RegisterType<AccountService>().As<IAccountService>().InstancePerRequest();
+            builder.RegisterType<SmsService>().As<ISmsService>().InstancePerRequest();
             builder.RegisterType<AccountAreaMappingService>().As<IAccountAreaMappingService>().InstancePerRequest();
             builder.RegisterType<AreaService>().As<IAreaService>().InstancePerRequest();
             builder.RegisterType<CityService>().As<ICityService>().InstancePerRequest();

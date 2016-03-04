@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="AccountAreaMappingService.cs" />
     <Compile Include="AccountService.cs" />
+    <Compile Include="SmsService.cs" />
     <Compile Include="AreaService.cs" />
     <Compile Include="BillService.cs" />
     <Compile Include="CityService.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="GlobalSettingService.cs" />
     <Compile Include="IAccountAreaMappingService.cs" />
     <Compile Include="IAccountService.cs" />
+    <Compile Include="ISmsService.cs" />
     <Compile Include="IAreaService.cs" />
     <Compile Include="IBillService.cs" />
     <Compile Include="ICityService.cs" />

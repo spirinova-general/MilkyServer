@@ -28,11 +28,13 @@ namespace Contacts.Web.Controllers
         private IGlobalSettingService _globalSettingService;
         private IAccountAreaMappingService _accountAreaMappingsService;
         private IAreaService _areaService;
+        private ISmsService _smsService;
         #endregion
 
         #region Ctor
         public SyncObjectController(IBillService billService, IAccountService accountService, ICustomerService customerService, ICustomerSettingService customerSettingService
-                                     , IDeliveryService deliveryServie, IGlobalSettingService globalSettingService, IAccountAreaMappingService accountAreaMappingsService, IAreaService areaService)
+                                     , IDeliveryService deliveryServie, IGlobalSettingService globalSettingService, IAccountAreaMappingService accountAreaMappingsService, 
+                                    IAreaService areaService, ISmsService smsService)
         {
             _billService = billService;
             _accountService = accountService;
@@ -42,6 +44,7 @@ namespace Contacts.Web.Controllers
             _globalSettingService = globalSettingService;
             _accountAreaMappingsService = accountAreaMappingsService;
             _areaService = areaService;
+            _smsService = smsService;
         }
         #endregion
 
@@ -150,10 +153,19 @@ namespace Contacts.Web.Controllers
             }
         }
 
-        [HttpPost]
-        public HttpResponseMessage SendSms()
+        [HttpGet]
+        public HttpResponseMessage SendSms(string mobile, string message)
         {
-            return Request.CreateResponse(HttpStatusCode.Created, "Sms sent Successfully");
+            try
+            {
+                _smsService.SendSms(mobile, message);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK, "Sms sent Successfully");
         }
 
         [HttpGet]
