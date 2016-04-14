@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="AccountAreaMappingService.cs" />
     <Compile Include="AccountService.cs" />
+    <Compile Include="IAuthenticationService.cs" />
     <Compile Include="SmsService.cs" />
     <Compile Include="AreaService.cs" />
     <Compile Include="BillService.cs" />

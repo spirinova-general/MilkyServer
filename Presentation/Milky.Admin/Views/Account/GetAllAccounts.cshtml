@@ -1,0 +1,202 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/js/jquery.jqGrid.js" type="text/javascript"></script>
+<script src="~/js/grid.locale-en.js" type="text/javascript"></script>
+<script>
+    $(document).ready(function () {
+
+
+        var API_URL = "http://localhost:57156/Account/GetAllAccounts";
+        jQuery("#grid").jqGrid({
+            url: API_URL,
+            datatype: "json",
+            mtype: 'GET',
+            colNames: ['Id', 'Farmer Code', 'Farmer Name', 'Mobile No', 'Validated', 'Total Sms', 'Add Sms', 'Start Date', 'End date'],
+            colModel: [{ name: 'Id', index: 'Id', width: 50, editable: true, editoptions: { readonly: "readonly" }, editrules: { readonly: "readonly" } },
+                //{ name: 'Id', index: 'Id', width: 50, sorttype: "int", editable: true, editoptions: { readonly: "readonly" }, editrules: { readonly: "readonly" } },
+             { name: 'FarmerCode', index: 'FarmerCode', width: 70, },
+             { name: 'FarmerName', index: 'FarmerName', width: 300, },
+             { name: 'MobileNumber', index: 'MobileNumber', width: 100, },
+             { name: 'Validated', index: 'Validated', width: 50 },
+             { name: 'TotalSms', index: 'TotalSms', width: 60, },
+             { name: 'NewSms', index: 'NewSms', editable: true, hidden: true, viewable: true, editrules: { edithidden: true, number: true, custom: true, custom_func: numberCheck }, width: 60, },
+             { name: 'StartDate', index: 'StartDate', width: 150, },
+             {
+                 name: 'EndDate', index: 'EndDate', width: 150,
+                 //editrules: { date: true }
+                 editrules: { custom: true, custom_func: datecheck },
+                 formatter: 'date',
+
+                 formatoptions: { srcformat: 'd F Y', newformat: 'd/m/Y' },
+                 edittype: 'text', editable: true,
+                 formoptions: { elmsuffix: "&nbsp;&nbsp;(<span class='mystar' style='color:green'>dd/mm/yyyy</span>)&nbsp;", rowpos: 3 },
+                 editoptions: { dataInit: function (el) { setTimeout(function () { $(el).datepicker({ dateFormat: 'dd/M/y' }); }, 200); } }
+             },
+            ],
+            viewrecords: true,
+            ignoreCase: true,
+            height: 'auto',
+            autowidth: true,
+            rownum: 10,
+            pager: '#jQGridDemoPager',
+            caption: "Accounts Details List",
+            emptyrecords: "No records to display",
+            //   editurl: API_URL,
+
+            jsonReader: {
+                rows: "rows",
+                page: "page",
+                total: "total",
+                records: "records",
+                repeatitems: false,
+                Id: "0"
+            },
+            multiselect: false,
+
+        });
+
+
+        function updateDialog(action) {
+            return {
+                closeAfterAdd: true
+                , closeAfterEdit: true
+                , afterShowForm: function (formId) { }
+                , modal: true
+
+              , beforeShowForm: function (form) {
+                  var dlgDiv = $("#editmod" + grid[0].id);
+                  var parentDiv = dlgDiv.parent();
+                  var dlgWidth = dlgDiv.width();
+                  var parentWidth = $(window).width();
+                  var dlgHeight = dlgDiv.height();
+                  var parentHeight = $(window).height();
+                  dlgDiv[0].style.top = Math.round((parentHeight - dlgHeight) / 2) + "px";
+                  dlgDiv[0].style.left = Math.round((parentWidth - dlgWidth) / 2) + "px";
+              },
+
+                afterShowForm: function (eparams) {
+                    //is not working at this moment. Less priority so wl get back when have time
+                    //   $('#grid input[name=Id]').attr('disabled','disabled');
+                }
+
+                , onclickSubmit: function (options, postdata, params) {
+                    options.url = "http://localhost:57156/Account/UpdateAccount" + "/" + encodeURIComponent(postdata["Id"]);
+                    //, closeAfterAdd= true
+                    var list = $("#grid");
+                    var selectedRow = list.getGridParam("selrow");
+                    rowData = list.getRowData(selectedRow);
+
+                    //  params.url += rowData.Id;
+                    params.mtype = "POST";
+                }
+                , width: "300"
+                , afterComplete: function (response) {
+                    if (response.responseText) {
+                        alert(response.responseText);
+                    }
+                }
+            };
+        }
+
+        var grid = $("#grid");
+
+        jQuery("#grid").jqGrid('navGrid', '#jQGridDemoPager',
+
+              { edit: true, edittext: "Edit", add: false, del: false, search: false, refresh: false },
+
+              updateDialog("POST")
+
+              //is not working right now. Wl get back to it later on...
+
+
+        );
+
+        function datecheck(value, colname) {
+            var dateParts = value.split("/");
+            var datePart = dateParts[0];
+            var mounth = dateParts[1];
+            var yearPart = dateParts[2];
+
+            //var mounths = $.jgrid.formatter.date.monthNames;
+            //var monthPart = -1;
+            //for (var i = 0; i < 12; i++) {
+            //    if (mounth === mounths[i]) {
+            //        monthPart = i + 1;
+            //        break;
+            //    }
+            //}
+            var dateText = mounth + '/' + datePart + '/' + yearPart;
+
+            debugger;
+            var date = Date.parse(dateText);
+            if (isNaN(date))
+                return [false, "Invalid date. Format expected: 20/10/2016  (Day/Month/Year)"];
+            else
+                return [true, ""];
+
+        }
+
+        function numberCheck(value, colname) {
+
+            if (value >= 0) {
+                return [true, ""];
+            }
+            else
+                return [false, "Please enter positive number"]
+
+        }
+    });
+</script>
+
+<style>
+    #logout {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 16px;
+        margin: 0;
+        padding: 0.5rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        display: block;
+        box-sizing: border-box;
+        margin: 0.5rem auto;
+        padding: 0.75rem;
+        font-size: 1rem;
+        text-align: center;
+        text-transform: uppercase;
+        color: white;
+        $disco: #99154e;
+        border: none;
+        border-radius: 0.5rem;
+        outline: none;
+        user-select: none;
+        cursor: pointer;
+        &:active transform: translateY(0.125rem) box-shadow: 0 0.125rem darken($disco, 10%);
+        text-decoration: none !important;
+    }
+
+    .header_Panel {
+        width: 80%;
+        margin: auto;
+    }
+</style>
+
+<style>
+    .ui-jqgrid .ui-jqgrid-htable {
+        table-layout: auto;
+    }
+</style>
+
+<div class="header_Panel" >
+    <div style=" width:90%; float:left; text-align: left; font-size:12px;  cursor:  auto;" id="logout">Admin Panel</div>
+    <div style=" width:10%; float:right">  <a href="~/Account/Logout" id="logout" style="float:right; padding-right:12px">logout</a></div>
+</div>
+<div class="middle-content_1" style="width:80% ; margin:auto;    margin-top: 75px;">
+
+    <table id="grid"></table>
+    <div id="jQGridDemoPager"></div>
+
+</div>

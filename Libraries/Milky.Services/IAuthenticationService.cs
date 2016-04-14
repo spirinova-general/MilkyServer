@@ -9,9 +9,9 @@ namespace Blogger.Services
 {
    public partial  interface IAuthenticationService
    {
-       void SignIn(User user, bool createPersistentCookie);
+       void SignIn(Account account, bool createPersistentCookie);
        void SignOut();
-       User GetAuthenticatedUser();
+       Account GetAuthenticatedAccount();
     }
 }
  
